@@ -4,6 +4,9 @@ import (
 	"fmt"
 )
 
+//YANG KURANG NIM, FUNGSI PENGUMUMAN KELULUSAN, DAN EDIT PROFIL (MAHASISWA)
+//PERLU MENAMBAHKAN MINIMUM NILAI KELULUSAN PADA ADMIN
+
 const NMAXMahasiswa int = 100
 const NMAXJurusan int = 10
 
@@ -22,7 +25,8 @@ type infotype struct {
 }
 
 type jurusan struct {
-	namaJurusan string
+	namaJurusan    string
+	nilaiKelulusan int
 }
 
 type infoMahasiswa struct {
@@ -189,6 +193,7 @@ func inputNilai() {
 	var nilai int
 	var namaCari string
 	fmt.Print("Masukkan nama Anda: ")
+	fmt.Print("info1")
 	fmt.Scan(&namaCari)
 	var indeksUbah int = searchMahasiswa(namaCari)
 	if indeksUbah != -1 {
@@ -204,6 +209,7 @@ func editProfil() {
 	var namaCari string
 	var namaBaru string
 	fmt.Print("Masukkan nama Anda: ")
+	fmt.Print("info2")
 	fmt.Scan(&namaCari)
 	var indeksUbah int = searchMahasiswa(namaCari)
 	if indeksUbah != -1 {
@@ -217,10 +223,11 @@ func editProfil() {
 func pengumumanKelulusan() {
 	var namaCari string
 	fmt.Print("Masukkan nama Anda: ")
+	fmt.Print("info3")
 	fmt.Scan(&namaCari)
 	var indeksCari int = searchMahasiswa(namaCari)
 	if indeksCari != -1 {
-		if dataMahasiswa.data[indeksCari].nilai >= 80 {
+		if dataMahasiswa.data[indeksCari].nilai >= dataJurusan.data[indeksCari].nilaiKelulusan {
 			fmt.Println("Selamat Anda lulus")
 		} else {
 			fmt.Println("Anda tidak lulus")
@@ -263,7 +270,7 @@ func opsiAdmin() {
 	fmt.Println("	6. Hapus data jurusan")
 	fmt.Println("	7. Tampilkan Data Mahasiswa")
 	fmt.Println("	8. Tampilkan Data Jurusan")
-	fmt.Println("	9. Kembali")
+	fmt.Println("	9. Keluar")
 	fmt.Println("=====================================")
 
 	fmt.Print("Opsi: ")
@@ -395,17 +402,6 @@ func registrasiMahasiswa() {
 	opsiMahasiswa()
 }
 
-// func loginMahasiswa(){
-// 	masukMahasiswa()
-// }
-
-// MAHASISWA
-
-// func masukMahasiswa( ){
-// 	var user, password string
-
-// }
-
 //ADMIN
 
 func isMahasiswaDiterimaDitolak() {
@@ -527,7 +523,7 @@ func hapusDM() {
 //JURUSAN
 
 func inputDJ() {
-	var jumlah int
+	var jumlah, nilaiKelulusan int
 	var nama string
 	var idx int
 	idx = dataJurusan.jumlahJurusan
@@ -538,6 +534,9 @@ func inputDJ() {
 		fmt.Print("Masukkan Nama Jurusan: ")
 		fmt.Scan(&nama)
 		dataJurusan.data[idx].namaJurusan = nama
+		fmt.Print("Masukkan Nilai Kelulusan: ")
+		fmt.Scan(&nilaiKelulusan)
+		dataJurusan.data[idx].nilaiKelulusan = nilaiKelulusan
 		idx++
 	}
 	dataJurusan.jumlahJurusan = idx
@@ -675,7 +674,6 @@ func mahasiswaTerurutBerdasarkanNilaiAscending() {
 			dataMahasiswa.data[j+1] = dataMahasiswa.data[j]
 			j--
 		}
-
 		dataMahasiswa.data[j+1] = key
 	}
 }
@@ -702,7 +700,6 @@ func mahasiswaTerurutBerdasarkanJurusanAscending() {
 				minIndex = j
 			}
 		}
-
 		dataMahasiswa.data[i], dataMahasiswa.data[minIndex] = dataMahasiswa.data[minIndex], dataMahasiswa.data[i]
 	}
 }
@@ -749,6 +746,7 @@ func tampilkanDaftarJurusan() {
 	for i := 0; i < dataJurusan.jumlahJurusan; i++ {
 		if dataJurusan.data[i].namaJurusan != "" {
 			fmt.Println("Nama Jurusan: ", dataJurusan.data[i].namaJurusan)
+			fmt.Println("Nilai Kelulusan: ", dataJurusan.data[i].nilaiKelulusan)
 			fmt.Println("============================")
 		}
 	}
